@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minara — Loading</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; background: #fff; }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+    }
+    .loader-video {
+      width: min(92vw, 640px);
+      height: auto;
+      display: block;
+      border-radius: 12px;
+    }
+    .loading-text {
+      font-family: "Comic Sans MS", "Segoe Print", cursive;
+      font-size: 18px;
+      color: #111;
+      letter-spacing: 1px;
+    }
+    .loading-text .dot { animation: blink 1.2s infinite; }
+    .loading-text .dot:nth-child(2) { animation-delay: .2s; }
+    .loading-text .dot:nth-child(3) { animation-delay: .4s; }
+    @keyframes blink { 0%,100% { opacity: .2; } 50% { opacity: 1; } }
+  </style>
+</head>
+<body>
+  <video class="loader-video" src="assets/Animate_the_provided_black_and.mp4"
+         autoplay muted loop playsinline></video>
+  <div class="loading-text">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></div>
+</body>
+</html>

@@ -1,0 +1,116 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow-y: auto;
+  background: #fff;
+  scroll-behavior: smooth;
+}
+
+.scroll-float {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.scroll-float-text {
+  display: inline-block;
+}
+
+.sf-char {
+  display: inline-block;
+}
+
+.pf-heading {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: clamp(2rem, 6vw, 7rem);
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+  color: #2E3A59;
+  margin: 0;
+}
+
+.faq-heading-1 {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: clamp(2rem, 6vw, 7rem);
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+  color: #2E3A59;
+  margin: 0;
+}
+
+.faq-heading-2 {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: clamp(2rem, 6vw, 7rem);
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+  color: rgba(46, 58, 89, 0.35);
+  margin: 0;
+  margin-top: -0.05em;
+}
+
+.card-text {
+  font-family: "Satoshi", "General Sans", "Inter", sans-serif;
+  font-weight: 500;
+  font-size: clamp(0.7rem, 1.1vw, 0.9rem);
+  color: #2E3A59;
+  line-height: 1.5;
+  letter-spacing: 0.2em;
+  margin: 0;
+  max-width: 85%;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.contact-heading {
+  font-family: "Inter", sans-serif;
+  font-weight: 900;
+  font-size: clamp(3rem, 7vw, 6rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: #2E3A59;
+  margin: 0;
+  text-align: center;
+}
+
+@keyframes chevronPulse {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(3px); }
+}
+
+@keyframes chevronPulseLeft {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-3px); }
+}
+
+@keyframes arrowFloat {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(4px, 0); }
+}
+
+@keyframes arrowBounce {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(6px); }
+}
+
+.arrow-animated {
+  animation: arrowBounce 1.5s ease-in-out infinite;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
