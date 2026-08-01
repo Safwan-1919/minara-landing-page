@@ -84,7 +84,7 @@ export default function FooterSection() {
           paddingTop: '5vh',
         }}
       >
-        <div className="brand-letters-wrap" style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center' }}>
           {letters.map((l, i) => (
             <span
               key={i}
