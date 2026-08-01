@@ -117,8 +117,8 @@ input[type="number"] {
 
 @media (max-width: 600px) {
   .brand-letters-wrap {
-    transform: scale(0.62);
+    transform: scale(0.5);
     transform-origin: center center;
-    margin-top: -12vh;
+    margin-top: -15vh;
   }
 }
