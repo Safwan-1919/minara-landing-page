@@ -112,12 +112,12 @@ export default function FooterSection() {
               style={{
                 fontFamily: '"Inter", sans-serif',
                 fontWeight: 900,
-                fontSize: isMobile ? 'clamp(3rem, 14vw, 4rem)' : 'clamp(7rem, 20vw, 24rem)',
+                fontSize: isMobile ? 'clamp(3.5rem, 16vw, 5rem)' : 'clamp(7rem, 20vw, 24rem)',
                 lineHeight: 0.8,
                 color: '#F7E9D2',
                 display: 'inline-block',
                 userSelect: 'none',
-                transform: `translateY(${isMobile ? l.y * 0.25 : l.y}px)`,
+                transform: `translateY(${isMobile ? 0 : l.y}px)`,
                 transition: 'color 0.2s ease',
                 cursor: 'default',
               }}
