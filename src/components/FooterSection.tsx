@@ -84,7 +84,7 @@ export default function FooterSection() {
           paddingTop: '5vh',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', flexWrap: 'wrap', gap: '0 clamp(2px, 0.5vw, 8px)' }}>
           {letters.map((l, i) => (
             <span
               key={i}
@@ -92,12 +92,12 @@ export default function FooterSection() {
               style={{
                 fontFamily: '"Inter", sans-serif',
                 fontWeight: 900,
-                fontSize: 'clamp(7rem, 20vw, 24rem)',
+                fontSize: 'clamp(3rem, 17vw, 24rem)',
                 lineHeight: 0.8,
                 color: '#F7E9D2',
                 display: 'inline-block',
                 userSelect: 'none',
-                transform: `translateY(${l.y}px)`,
+                transform: `translateY(${l.y * 0.5}px)`,
                 transition: 'color 0.2s ease',
                 cursor: 'default',
               }}
