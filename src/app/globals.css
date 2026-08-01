@@ -114,11 +114,3 @@ input[type="number"] {
   -moz-appearance: textfield;
   appearance: textfield;
 }
-
-@media (max-width: 600px) {
-  .brand-letters-wrap {
-    flex-wrap: wrap;
-    transform: scale(0.45);
-    margin-top: -15vh;
-  }
-}

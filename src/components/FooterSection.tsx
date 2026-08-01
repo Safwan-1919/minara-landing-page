@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -25,12 +25,18 @@ const letters = [
 export default function FooterSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const brandRef = useRef<HTMLDivElement>(null)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 600)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
 
   useEffect(() => {
     const el = brandRef.current
     if (!el) return
-
-    const isMobile = window.innerWidth <= 600
 
     const ctx = gsap.context(() => {
       const letterEls = el.querySelectorAll('.brand-letter')
@@ -67,7 +73,7 @@ export default function FooterSection() {
     })
 
     return () => ctx.revert()
-  }, [])
+  }, [isMobile])
 
   return (
     <footer
@@ -98,7 +104,7 @@ export default function FooterSection() {
           paddingTop: '5vh',
         }}
       >
-        <div className="brand-letters-wrap" style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center' }}>
           {letters.map((l, i) => (
             <span
               key={i}
@@ -106,12 +112,12 @@ export default function FooterSection() {
               style={{
                 fontFamily: '"Inter", sans-serif',
                 fontWeight: 900,
-                fontSize: 'clamp(7rem, 20vw, 24rem)',
+                fontSize: isMobile ? 'clamp(3rem, 14vw, 4rem)' : 'clamp(7rem, 20vw, 24rem)',
                 lineHeight: 0.8,
                 color: '#F7E9D2',
                 display: 'inline-block',
                 userSelect: 'none',
-                transform: `translateY(${l.y}px)`,
+                transform: `translateY(${isMobile ? l.y * 0.25 : l.y}px)`,
                 transition: 'color 0.2s ease',
                 cursor: 'default',
               }}
@@ -128,7 +134,7 @@ export default function FooterSection() {
       <svg
         viewBox="0 0 900 100"
         style={{
-          width: 'clamp(300px, 55vw, 550px)',
+          width: isMobile ? 'clamp(250px, 80vw, 400px)' : 'clamp(300px, 55vw, 550px)',
           height: 'auto',
           marginTop: '-20px',
           marginBottom: '16px',
@@ -146,7 +152,7 @@ export default function FooterSection() {
           style={{
             fontFamily: '"Inter", sans-serif',
             fontWeight: 700,
-            fontSize: '38px',
+            fontSize: isMobile ? '22px' : '38px',
             letterSpacing: '0.3em',
             textTransform: 'uppercase',
           }}
