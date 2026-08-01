@@ -30,26 +30,40 @@ export default function FooterSection() {
     const el = brandRef.current
     if (!el) return
 
+    const isMobile = window.innerWidth <= 600
+
     const ctx = gsap.context(() => {
       const letterEls = el.querySelectorAll('.brand-letter')
 
-      gsap.fromTo(
-        letterEls,
-        { yPercent: 30, opacity: 0 },
-        {
-          yPercent: 0,
-          opacity: 1,
-          ease: 'power2.out',
-          duration: 1,
-          stagger: 0.08,
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 90%',
-            end: 'top 50%',
-            scrub: 1,
-          },
-        }
-      )
+      if (isMobile) {
+        gsap.fromTo(
+          letterEls,
+          { opacity: 0 },
+          {
+            opacity: 1,
+            duration: 0.8,
+            stagger: 0.1,
+          }
+        )
+      } else {
+        gsap.fromTo(
+          letterEls,
+          { yPercent: 30, opacity: 0 },
+          {
+            yPercent: 0,
+            opacity: 1,
+            ease: 'power2.out',
+            duration: 1,
+            stagger: 0.08,
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 90%',
+              end: 'top 50%',
+              scrub: 1,
+            },
+          }
+        )
+      }
     })
 
     return () => ctx.revert()
