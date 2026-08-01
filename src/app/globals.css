@@ -114,3 +114,13 @@ input[type="number"] {
   -moz-appearance: textfield;
   appearance: textfield;
 }
+
+@media (max-width: 600px) {
+  .brand-letter {
+    font-size: clamp(2.5rem, 14vw, 4rem) !important;
+  }
+
+  .brand-letters-wrap {
+    flex-wrap: wrap;
+  }
+}
