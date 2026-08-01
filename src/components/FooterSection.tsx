@@ -104,7 +104,11 @@ export default function FooterSection() {
           paddingTop: '5vh',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center' }}>
+        <div className="brand-letters-wrap" style={{
+          display: 'flex',
+          alignItems: 'baseline',
+          justifyContent: 'center',
+        }}>
           {letters.map((l, i) => (
             <span
               key={i}
@@ -112,12 +116,12 @@ export default function FooterSection() {
               style={{
                 fontFamily: '"Inter", sans-serif',
                 fontWeight: 900,
-                fontSize: isMobile ? 'clamp(3.5rem, 16vw, 5rem)' : 'clamp(7rem, 20vw, 24rem)',
+                fontSize: 'clamp(7rem, 20vw, 24rem)',
                 lineHeight: 0.8,
                 color: '#F7E9D2',
                 display: 'inline-block',
                 userSelect: 'none',
-                transform: `translateY(${isMobile ? 0 : l.y}px)`,
+                transform: `translateY(${l.y}px)`,
                 transition: 'color 0.2s ease',
                 cursor: 'default',
               }}
@@ -134,7 +138,7 @@ export default function FooterSection() {
       <svg
         viewBox="0 0 900 100"
         style={{
-          width: isMobile ? 'clamp(250px, 80vw, 400px)' : 'clamp(300px, 55vw, 550px)',
+          width: 'clamp(300px, 55vw, 550px)',
           height: 'auto',
           marginTop: '-20px',
           marginBottom: '16px',
@@ -152,7 +156,7 @@ export default function FooterSection() {
           style={{
             fontFamily: '"Inter", sans-serif',
             fontWeight: 700,
-            fontSize: isMobile ? '22px' : '38px',
+            fontSize: '38px',
             letterSpacing: '0.3em',
             textTransform: 'uppercase',
           }}
