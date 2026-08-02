@@ -37,8 +37,16 @@ export default function FAQSection() {
   const pathRef = useRef<SVGPathElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const [mounted, setMounted] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => { setMounted(true) }, [])
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 600)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
 
   useEffect(() => {
     const video = videoRef.current
@@ -55,7 +63,19 @@ export default function FAQSection() {
     }
 
     window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
+
+    const handleTouchMove = (e: TouchEvent) => {
+      const x = Math.max(0, Math.min(1, e.touches[0].clientX / window.innerWidth))
+      if (video.readyState >= 2) {
+        video.currentTime = x * video.duration
+      }
+    }
+    window.addEventListener('touchmove', handleTouchMove)
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('touchmove', handleTouchMove)
+    }
   }, [mounted])
 
   useEffect(() => {
@@ -152,7 +172,7 @@ export default function FAQSection() {
           height: '100vh',
           display: 'flex',
           alignItems: 'stretch',
-          padding: '0 clamp(24px, 4vw, 64px)',
+          padding: isMobile ? '0 16px' : '0 clamp(24px, 4vw, 64px)',
           overflow: 'hidden',
         }}
       >
@@ -186,25 +206,28 @@ export default function FAQSection() {
             width: '100%',
             margin: '0 auto',
             display: 'flex',
-              gap: 'clamp(8px, 1vw, 16px)',
-            alignItems: 'stretch',
+            flexDirection: isMobile ? 'column' : 'row',
+              gap: isMobile ? '16px' : 'clamp(8px, 1vw, 16px)',
+            alignItems: isMobile ? 'center' : 'stretch',
           }}
         >
           {/* Left side — fixed */}
           <div
             style={{
-              flex: '0 0 auto',
+              flex: isMobile ? 'none' : '0 0 auto',
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'flex-start',
+              alignItems: isMobile ? 'center' : 'flex-start',
               justifyContent: 'flex-start',
-              paddingTop: 'clamp(20px, 2.5vw, 40px)',
+              paddingTop: isMobile ? 'clamp(12px, 2vw, 20px)' : 'clamp(20px, 2.5vw, 40px)',
+              textAlign: isMobile ? 'center' : 'left',
+              width: isMobile ? '100%' : 'auto',
             }}
           >
             <p
               style={{
                 fontFamily: '"Inter", sans-serif',
-                fontSize: 'clamp(0.65rem, 0.8vw, 0.75rem)',
+                fontSize: isMobile ? '0.65rem' : 'clamp(0.65rem, 0.8vw, 0.75rem)',
                 fontWeight: 500,
                 textTransform: 'uppercase',
                 letterSpacing: '0.2em',
@@ -234,32 +257,34 @@ export default function FAQSection() {
             >
               Questions
             </ScrollFloat>
-            <div
-              style={{
-                width: '100%',
-                maxWidth: '260px',
-                aspectRatio: '3/4',
-                borderRadius: '24px',
-                overflow: 'hidden',
-                background: 'transparent',
-                marginTop: '80px',
-                marginLeft: 'auto',
-                marginRight: 'clamp(120px, 14vw, 200px)',
-              }}
-            >
-              <video
-                ref={videoRef}
-                src="/animated-character.webm"
-                muted
-                playsInline
-                preload="auto"
+            {!isMobile && (
+              <div
                 style={{
                   width: '100%',
-                  height: '100%',
-                  objectFit: 'contain',
+                  maxWidth: '260px',
+                  aspectRatio: '3/4',
+                  borderRadius: '24px',
+                  overflow: 'hidden',
+                  background: 'transparent',
+                  marginTop: '80px',
+                  marginLeft: 'auto',
+                  marginRight: 'clamp(120px, 14vw, 200px)',
                 }}
-              />
-            </div>
+              >
+                <video
+                  ref={videoRef}
+                  src="/animated-character.webm"
+                  muted
+                  playsInline
+                  preload="auto"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                  }}
+                />
+              </div>
+            )}
           </div>
 
           {/* Right side — card stack transitions */}
@@ -267,11 +292,12 @@ export default function FAQSection() {
             style={{
               flex: '1',
               position: 'relative',
-              height: '100%',
+              height: isMobile ? 'auto' : '100%',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-                  maxWidth: '550px',
+              maxWidth: isMobile ? '100%' : '550px',
+              width: isMobile ? '100%' : 'auto',
             }}
           >
             {faqs.map((faq, i) => (
@@ -280,17 +306,18 @@ export default function FAQSection() {
                 ref={(el) => { cardsRef.current[i] = el }}
                 style={{
                   position: 'absolute',
-                  top: '60%',
+                  top: isMobile ? '55%' : '60%',
                   left: 0,
                   right: 0,
-                  transform: 'translateY(-50%)',
+                  transform: isMobile ? 'none' : 'translateY(-50%)',
                   opacity: 0,
-                  width: 'clamp(340px, 32vw, 440px)',
-                  aspectRatio: '1 / 0.9',
+                  width: isMobile ? '100%' : 'clamp(340px, 32vw, 440px)',
+                  maxWidth: isMobile ? '400px' : 'none',
+                  aspectRatio: isMobile ? 'auto' : '1 / 0.9',
                   background: '#fff',
-                  borderRadius: '28px',
+                  borderRadius: isMobile ? '20px' : '28px',
                   border: '1px solid rgba(46,58,89,0.06)',
-                  padding: 'clamp(44px, 4.5vw, 56px) clamp(32px, 3.5vw, 44px) clamp(32px, 3.5vw, 44px)',
+                  padding: isMobile ? '28px 24px' : 'clamp(44px, 4.5vw, 56px) clamp(32px, 3.5vw, 44px) clamp(32px, 3.5vw, 44px)',
                   boxShadow: '0 12px 48px rgba(46,58,89,0.1)',
                   willChange: 'transform, opacity',
                 }}
@@ -298,7 +325,7 @@ export default function FAQSection() {
                 <span
                   style={{
                     fontFamily: '"Inter", sans-serif',
-                    fontSize: 'clamp(0.65rem, 0.75vw, 0.75rem)',
+                    fontSize: isMobile ? '0.6rem' : 'clamp(0.65rem, 0.75vw, 0.75rem)',
                     fontWeight: 600,
                     color: 'rgba(46,58,89,0.2)',
                     display: 'block',
@@ -310,12 +337,12 @@ export default function FAQSection() {
                 <h3
                   style={{
                     fontFamily: '"Inter", sans-serif',
-                    fontSize: 'clamp(1.2rem, 1.8vw, 1.6rem)',
+                    fontSize: isMobile ? '1rem' : 'clamp(1.2rem, 1.8vw, 1.6rem)',
                     fontWeight: 500,
                     color: '#2E3A59',
                     lineHeight: 1.3,
                     margin: 0,
-                    marginBottom: '20px',
+                    marginBottom: '16px',
                   }}
                 >
                   {faq.question}
@@ -323,7 +350,7 @@ export default function FAQSection() {
                 <p
                   style={{
                     fontFamily: '"Inter", sans-serif',
-                    fontSize: 'clamp(0.85rem, 1vw, 1rem)',
+                    fontSize: isMobile ? '0.8rem' : 'clamp(0.85rem, 1vw, 1rem)',
                     color: 'rgba(46,58,89,0.5)',
                     lineHeight: 1.7,
                     margin: 0,
