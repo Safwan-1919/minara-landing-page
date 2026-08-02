@@ -157,14 +157,10 @@ export default function FAQSection() {
     if (!isMobile || !innerRef.current) return
     const el = innerRef.current
     const fit = () => {
-      const parentWidth = el.parentElement!.clientWidth
-      const scale = Math.min(1, parentWidth / el.scrollWidth)
-      el.style.transform = `scale(${scale})`
-      el.style.transformOrigin = 'top left'
+      el.style.transform = ''
+      el.style.transformOrigin = ''
     }
     fit()
-    window.addEventListener('resize', fit)
-    return () => window.removeEventListener('resize', fit)
   }, [isMobile])
 
   if (!mounted) return null
@@ -186,9 +182,10 @@ export default function FAQSection() {
           top: 0,
           height: '100vh',
           display: 'flex',
-          alignItems: 'stretch',
-          padding: '0 clamp(24px, 4vw, 64px)',
-          overflow: isMobile ? 'visible' : 'hidden',
+          flexDirection: isMobile ? 'column' : 'row',
+          alignItems: isMobile ? 'stretch' : 'stretch',
+          padding: isMobile ? '0 20px' : '0 clamp(24px, 4vw, 64px)',
+          overflow: 'hidden',
         }}
       >
         <svg
@@ -215,164 +212,115 @@ export default function FAQSection() {
             opacity="0.70"
           />
         </svg>
-        <div
-          ref={innerRef}
-          style={{
-            maxWidth: '1400px',
-            width: '100%',
-            margin: '0 auto',
-            display: 'flex',
-            gap: 'clamp(8px, 1vw, 16px)',
-            alignItems: 'stretch',
-            ...(isMobile ? { overflow: 'visible' } : {}),
-          }}
-        >
-          {/* Left side — fixed */}
+
+        {isMobile ? (
           <div
+            ref={innerRef}
             style={{
-              flex: '0 0 auto',
+              width: '100%',
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'flex-start',
-              justifyContent: 'flex-start',
-              paddingTop: 'clamp(20px, 2.5vw, 40px)',
+              alignItems: 'center',
+              paddingTop: 'clamp(16px, 4vh, 32px)',
+              zIndex: 2,
             }}
           >
-            <p
-              style={{
-                fontFamily: '"Inter", sans-serif',
-                fontSize: 'clamp(0.65rem, 0.8vw, 0.75rem)',
-                fontWeight: 500,
-                textTransform: 'uppercase',
-                letterSpacing: '0.2em',
-                color: 'rgba(46,58,89,0.4)',
-                marginBottom: '4px',
-              }}
-            >
-              FAQ
-            </p>
-            <ScrollFloat
-              containerClassName="faq-heading-1"
-              animationDuration={1}
-              ease="back.inOut(2)"
-              scrollStart="top 95%"
-              scrollEnd="bottom bottom-=40%"
-              stagger={0.03}
-            >
+            <p style={{
+              fontFamily: '"Inter", sans-serif',
+              fontSize: '0.65rem',
+              fontWeight: 500,
+              textTransform: 'uppercase',
+              letterSpacing: '0.2em',
+              color: 'rgba(46,58,89,0.4)',
+              marginBottom: '4px',
+            }}>FAQ</p>
+            <ScrollFloat containerClassName="faq-heading-1" animationDuration={1} ease="back.inOut(2)" scrollStart="top 95%" scrollEnd="bottom bottom-=40%" stagger={0.03}>
               Frequently Asked
             </ScrollFloat>
-            <ScrollFloat
-              containerClassName="faq-heading-2"
-              animationDuration={1}
-              ease="back.inOut(2)"
-              scrollStart="top 92%"
-              scrollEnd="bottom bottom-=40%"
-              stagger={0.03}
-            >
+            <ScrollFloat containerClassName="faq-heading-2" animationDuration={1} ease="back.inOut(2)" scrollStart="top 92%" scrollEnd="bottom bottom-=40%" stagger={0.03}>
               Questions
             </ScrollFloat>
-            <div
-              style={{
-                width: '100%',
-                maxWidth: '260px',
-                aspectRatio: '3/4',
-                borderRadius: '24px',
-                overflow: 'hidden',
-                background: 'transparent',
-                marginTop: '80px',
-                marginLeft: 'auto',
-                marginRight: 'clamp(120px, 14vw, 200px)',
-              }}
-            >
-                <video
-                  ref={videoRef}
-                  src="/animated-character.webm"
-                  muted
-                  playsInline
-                  preload="auto"
+            <div style={{
+              width: '120px',
+              aspectRatio: '3/4',
+              borderRadius: '16px',
+              overflow: 'hidden',
+              marginTop: '12px',
+            }}>
+              <video ref={videoRef} src="/animated-character.webm" muted playsInline preload="auto" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+            </div>
+            <div style={{
+              flex: 1,
+              position: 'relative',
+              width: '100%',
+              maxWidth: '380px',
+              marginTop: '16px',
+            }}>
+              {faqs.map((faq, i) => (
+                <div
+                  key={i}
+                  ref={(el) => { cardsRef.current[i] = el }}
                   style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    opacity: 0,
                     width: '100%',
-                    height: '100%',
-                    objectFit: 'contain',
+                    background: '#fff',
+                    borderRadius: '20px',
+                    border: '1px solid rgba(46,58,89,0.06)',
+                    padding: '28px 24px',
+                    boxShadow: '0 12px 48px rgba(46,58,89,0.1)',
+                    willChange: 'transform, opacity',
                   }}
-              />
+                >
+                  <span style={{ fontFamily: '"Inter", sans-serif', fontSize: '0.6rem', fontWeight: 600, color: 'rgba(46,58,89,0.2)', display: 'block', marginBottom: '4px' }}>
+                    {String(i + 1).padStart(2, '0')} / {String(faqs.length).padStart(2, '0')}
+                  </span>
+                  <h3 style={{ fontFamily: '"Inter", sans-serif', fontSize: '1rem', fontWeight: 500, color: '#2E3A59', lineHeight: 1.3, margin: 0, marginBottom: '12px' }}>
+                    {faq.question}
+                  </h3>
+                  <p style={{ fontFamily: '"Inter", sans-serif', fontSize: '0.8rem', color: 'rgba(46,58,89,0.5)', lineHeight: 1.7, margin: 0 }}>
+                    {faq.answer}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
-
-          {/* Right side — card stack transitions */}
+        ) : (
           <div
+            ref={innerRef}
             style={{
-              flex: '1',
-              position: 'relative',
-              height: '100%',
+              maxWidth: '1400px',
+              width: '100%',
+              margin: '0 auto',
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              maxWidth: '550px',
+              gap: 'clamp(8px, 1vw, 16px)',
+              alignItems: 'stretch',
             }}
           >
-            {faqs.map((faq, i) => (
-              <div
-                key={i}
-                ref={(el) => { cardsRef.current[i] = el }}
-                style={{
-                  position: 'absolute',
-                  top: '60%',
-                  left: 0,
-                  right: 0,
-                  transform: 'translateY(-50%)',
-                  opacity: 0,
-                  width: 'clamp(340px, 32vw, 440px)',
-                  aspectRatio: '1 / 0.9',
-                  background: '#fff',
-                  borderRadius: '28px',
-                  border: '1px solid rgba(46,58,89,0.06)',
-                  padding: 'clamp(44px, 4.5vw, 56px) clamp(32px, 3.5vw, 44px) clamp(32px, 3.5vw, 44px)',
-                  boxShadow: '0 12px 48px rgba(46,58,89,0.1)',
-                  willChange: 'transform, opacity',
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: '"Inter", sans-serif',
-                    fontSize: 'clamp(0.65rem, 0.75vw, 0.75rem)',
-                    fontWeight: 600,
-                    color: 'rgba(46,58,89,0.2)',
-                    display: 'block',
-                    marginBottom: '4px',
-                  }}
-                >
-                  {String(i + 1).padStart(2, '0')} / {String(faqs.length).padStart(2, '0')}
-                </span>
-                <h3
-                  style={{
-                    fontFamily: '"Inter", sans-serif',
-                    fontSize: 'clamp(1.2rem, 1.8vw, 1.6rem)',
-                    fontWeight: 500,
-                    color: '#2E3A59',
-                    lineHeight: 1.3,
-                    margin: 0,
-                    marginBottom: '16px',
-                  }}
-                >
-                  {faq.question}
-                </h3>
-                <p
-                  style={{
-                    fontFamily: '"Inter", sans-serif',
-                    fontSize: 'clamp(0.85rem, 1vw, 1rem)',
-                    color: 'rgba(46,58,89,0.5)',
-                    lineHeight: 1.7,
-                    margin: 0,
-                    maxWidth: '95%',
-                  }}
-                >
-                  {faq.answer}
-                </p>
+            {/* Left side — fixed */}
+            <div style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start', paddingTop: 'clamp(20px, 2.5vw, 40px)' }}>
+              <p style={{ fontFamily: '"Inter", sans-serif', fontSize: 'clamp(0.65rem, 0.8vw, 0.75rem)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.2em', color: 'rgba(46,58,89,0.4)', marginBottom: '4px' }}>FAQ</p>
+              <ScrollFloat containerClassName="faq-heading-1" animationDuration={1} ease="back.inOut(2)" scrollStart="top 95%" scrollEnd="bottom bottom-=40%" stagger={0.03}>Frequently Asked</ScrollFloat>
+              <ScrollFloat containerClassName="faq-heading-2" animationDuration={1} ease="back.inOut(2)" scrollStart="top 92%" scrollEnd="bottom bottom-=40%" stagger={0.03}>Questions</ScrollFloat>
+              <div style={{ width: '100%', maxWidth: '260px', aspectRatio: '3/4', borderRadius: '24px', overflow: 'hidden', background: 'transparent', marginTop: '80px', marginLeft: 'auto', marginRight: 'clamp(120px, 14vw, 200px)' }}>
+                <video ref={videoRef} src="/animated-character.webm" muted playsInline preload="auto" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
               </div>
-            ))}
+            </div>
+            {/* Right side — card stack transitions */}
+            <div style={{ flex: '1', position: 'relative', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', maxWidth: '550px' }}>
+              {faqs.map((faq, i) => (
+                <div key={i} ref={(el) => { cardsRef.current[i] = el }} style={{ position: 'absolute', top: '60%', left: 0, right: 0, transform: 'translateY(-50%)', opacity: 0, width: 'clamp(340px, 32vw, 440px)', aspectRatio: '1 / 0.9', background: '#fff', borderRadius: '28px', border: '1px solid rgba(46,58,89,0.06)', padding: 'clamp(44px, 4.5vw, 56px) clamp(32px, 3.5vw, 44px) clamp(32px, 3.5vw, 44px)', boxShadow: '0 12px 48px rgba(46,58,89,0.1)', willChange: 'transform, opacity' }}>
+                  <span style={{ fontFamily: '"Inter", sans-serif', fontSize: 'clamp(0.65rem, 0.75vw, 0.75rem)', fontWeight: 600, color: 'rgba(46,58,89,0.2)', display: 'block', marginBottom: '4px' }}>{String(i + 1).padStart(2, '0')} / {String(faqs.length).padStart(2, '0')}</span>
+                  <h3 style={{ fontFamily: '"Inter", sans-serif', fontSize: 'clamp(1.2rem, 1.8vw, 1.6rem)', fontWeight: 500, color: '#2E3A59', lineHeight: 1.3, margin: 0, marginBottom: '16px' }}>{faq.question}</h3>
+                  <p style={{ fontFamily: '"Inter", sans-serif', fontSize: 'clamp(0.85rem, 1vw, 1rem)', color: 'rgba(46,58,89,0.5)', lineHeight: 1.7, margin: 0, maxWidth: '95%' }}>{faq.answer}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   )
