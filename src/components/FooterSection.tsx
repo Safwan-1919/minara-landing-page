@@ -135,7 +135,7 @@ export default function FooterSection() {
               style={{
                 fontFamily: '"Inter", sans-serif',
                 fontWeight: 900,
-                fontSize: 'clamp(7rem, 20vw, 24rem)',
+                fontSize: isMobile ? 'max(20vw, 286px)' : 'clamp(7rem, 20vw, 24rem)',
                 lineHeight: 0.8,
                 color: '#F7E9D2',
                 display: 'inline-block',
