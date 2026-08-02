@@ -33,6 +33,7 @@ const faqs = [
 export default function FAQSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const stickyRef = useRef<HTMLDivElement>(null)
+  const innerRef = useRef<HTMLDivElement>(null)
   const cardsRef = useRef<(HTMLDivElement | null)[]>([])
   const pathRef = useRef<SVGPathElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -152,6 +153,20 @@ export default function FAQSection() {
     return () => ctx.revert()
   }, [mounted])
 
+  useEffect(() => {
+    if (!isMobile || !innerRef.current) return
+    const el = innerRef.current
+    const fit = () => {
+      const parentWidth = el.parentElement!.clientWidth
+      const scale = Math.min(1, parentWidth / el.scrollWidth)
+      el.style.transform = `scale(${scale})`
+      el.style.transformOrigin = 'top left'
+    }
+    fit()
+    window.addEventListener('resize', fit)
+    return () => window.removeEventListener('resize', fit)
+  }, [isMobile])
+
   if (!mounted) return null
 
   return (
@@ -172,8 +187,8 @@ export default function FAQSection() {
           height: '100vh',
           display: 'flex',
           alignItems: 'stretch',
-          padding: isMobile ? '0 16px' : '0 clamp(24px, 4vw, 64px)',
-          overflow: 'hidden',
+          padding: '0 clamp(24px, 4vw, 64px)',
+          overflow: isMobile ? 'visible' : 'hidden',
         }}
       >
         <svg
@@ -201,33 +216,32 @@ export default function FAQSection() {
           />
         </svg>
         <div
+          ref={innerRef}
           style={{
             maxWidth: '1400px',
             width: '100%',
             margin: '0 auto',
             display: 'flex',
-            flexDirection: isMobile ? 'column' : 'row',
-              gap: isMobile ? '16px' : 'clamp(8px, 1vw, 16px)',
-            alignItems: isMobile ? 'center' : 'stretch',
+            gap: 'clamp(8px, 1vw, 16px)',
+            alignItems: 'stretch',
+            ...(isMobile ? { overflow: 'visible' } : {}),
           }}
         >
           {/* Left side — fixed */}
           <div
             style={{
-              flex: isMobile ? 'none' : '0 0 auto',
+              flex: '0 0 auto',
               display: 'flex',
               flexDirection: 'column',
-              alignItems: isMobile ? 'center' : 'flex-start',
+              alignItems: 'flex-start',
               justifyContent: 'flex-start',
-              paddingTop: isMobile ? 'clamp(12px, 2vw, 20px)' : 'clamp(20px, 2.5vw, 40px)',
-              textAlign: isMobile ? 'center' : 'left',
-              width: isMobile ? '100%' : 'auto',
+              paddingTop: 'clamp(20px, 2.5vw, 40px)',
             }}
           >
             <p
               style={{
                 fontFamily: '"Inter", sans-serif',
-                fontSize: isMobile ? '0.65rem' : 'clamp(0.65rem, 0.8vw, 0.75rem)',
+                fontSize: 'clamp(0.65rem, 0.8vw, 0.75rem)',
                 fontWeight: 500,
                 textTransform: 'uppercase',
                 letterSpacing: '0.2em',
@@ -260,14 +274,14 @@ export default function FAQSection() {
             <div
               style={{
                 width: '100%',
-                maxWidth: isMobile ? '140px' : '260px',
+                maxWidth: '260px',
                 aspectRatio: '3/4',
-                borderRadius: isMobile ? '16px' : '24px',
+                borderRadius: '24px',
                 overflow: 'hidden',
                 background: 'transparent',
-                marginTop: isMobile ? '20px' : '80px',
+                marginTop: '80px',
                 marginLeft: 'auto',
-                marginRight: isMobile ? 'auto' : 'clamp(120px, 14vw, 200px)',
+                marginRight: 'clamp(120px, 14vw, 200px)',
               }}
             >
                 <video
@@ -290,12 +304,11 @@ export default function FAQSection() {
             style={{
               flex: '1',
               position: 'relative',
-              height: isMobile ? '60vh' : '100%',
+              height: '100%',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              maxWidth: isMobile ? '100%' : '550px',
-              width: isMobile ? '100%' : 'auto',
+              maxWidth: '550px',
             }}
           >
             {faqs.map((faq, i) => (
@@ -304,18 +317,17 @@ export default function FAQSection() {
                 ref={(el) => { cardsRef.current[i] = el }}
                 style={{
                   position: 'absolute',
-                  top: isMobile ? '55%' : '60%',
+                  top: '60%',
                   left: 0,
                   right: 0,
-                  transform: isMobile ? 'none' : 'translateY(-50%)',
+                  transform: 'translateY(-50%)',
                   opacity: 0,
-                  width: isMobile ? '100%' : 'clamp(340px, 32vw, 440px)',
-                  maxWidth: isMobile ? '400px' : 'none',
-                  aspectRatio: isMobile ? 'auto' : '1 / 0.9',
+                  width: 'clamp(340px, 32vw, 440px)',
+                  aspectRatio: '1 / 0.9',
                   background: '#fff',
-                  borderRadius: isMobile ? '20px' : '28px',
+                  borderRadius: '28px',
                   border: '1px solid rgba(46,58,89,0.06)',
-                  padding: isMobile ? '28px 24px' : 'clamp(44px, 4.5vw, 56px) clamp(32px, 3.5vw, 44px) clamp(32px, 3.5vw, 44px)',
+                  padding: 'clamp(44px, 4.5vw, 56px) clamp(32px, 3.5vw, 44px) clamp(32px, 3.5vw, 44px)',
                   boxShadow: '0 12px 48px rgba(46,58,89,0.1)',
                   willChange: 'transform, opacity',
                 }}
@@ -323,7 +335,7 @@ export default function FAQSection() {
                 <span
                   style={{
                     fontFamily: '"Inter", sans-serif',
-                    fontSize: isMobile ? '0.6rem' : 'clamp(0.65rem, 0.75vw, 0.75rem)',
+                    fontSize: 'clamp(0.65rem, 0.75vw, 0.75rem)',
                     fontWeight: 600,
                     color: 'rgba(46,58,89,0.2)',
                     display: 'block',
@@ -335,7 +347,7 @@ export default function FAQSection() {
                 <h3
                   style={{
                     fontFamily: '"Inter", sans-serif',
-                    fontSize: isMobile ? '1rem' : 'clamp(1.2rem, 1.8vw, 1.6rem)',
+                    fontSize: 'clamp(1.2rem, 1.8vw, 1.6rem)',
                     fontWeight: 500,
                     color: '#2E3A59',
                     lineHeight: 1.3,
@@ -348,7 +360,7 @@ export default function FAQSection() {
                 <p
                   style={{
                     fontFamily: '"Inter", sans-serif',
-                    fontSize: isMobile ? '0.8rem' : 'clamp(0.85rem, 1vw, 1rem)',
+                    fontSize: 'clamp(0.85rem, 1vw, 1rem)',
                     color: 'rgba(46,58,89,0.5)',
                     lineHeight: 1.7,
                     margin: 0,
