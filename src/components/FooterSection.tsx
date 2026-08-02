@@ -25,6 +25,7 @@ const letters = [
 export default function FooterSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const brandRef = useRef<HTMLDivElement>(null)
+  const wrapRef = useRef<HTMLDivElement>(null)
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
@@ -75,6 +76,19 @@ export default function FooterSection() {
     return () => ctx.revert()
   }, [isMobile])
 
+  useEffect(() => {
+    if (!isMobile || !wrapRef.current) return
+    const wrap = wrapRef.current
+
+    const fit = () => {
+      const parentWidth = wrap.parentElement!.clientWidth
+      wrap.style.transform = `scale(${Math.min(1, parentWidth / wrap.scrollWidth)})`
+    }
+    fit()
+    window.addEventListener('resize', fit)
+    return () => window.removeEventListener('resize', fit)
+  }, [isMobile])
+
   return (
     <footer
       ref={sectionRef}
@@ -83,7 +97,7 @@ export default function FooterSection() {
         bottom: 0,
         zIndex: 20,
         background: '#2A1F14',
-        overflow: 'hidden',
+        overflow: isMobile ? 'visible' : 'hidden',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -104,11 +118,16 @@ export default function FooterSection() {
           paddingTop: '5vh',
         }}
       >
-        <div style={{
-          display: 'flex',
-          alignItems: 'baseline',
-          justifyContent: 'center',
-        }}>
+        <div
+          ref={wrapRef}
+          style={{
+            display: 'flex',
+            alignItems: 'baseline',
+            justifyContent: 'center',
+            whiteSpace: 'nowrap',
+            transformOrigin: 'center center',
+          }}
+        >
           {letters.map((l, i) => (
             <span
               key={i}
@@ -116,12 +135,12 @@ export default function FooterSection() {
               style={{
                 fontFamily: '"Inter", sans-serif',
                 fontWeight: 900,
-                fontSize: isMobile ? 'clamp(3.5rem, 19vw, 6rem)' : 'clamp(7rem, 20vw, 24rem)',
+                fontSize: 'clamp(7rem, 20vw, 24rem)',
                 lineHeight: 0.8,
                 color: '#F7E9D2',
                 display: 'inline-block',
                 userSelect: 'none',
-                transform: `translateY(${isMobile ? l.y * 0.18 : l.y}px)`,
+                transform: `translateY(${l.y}px)`,
                 transition: 'color 0.2s ease',
                 cursor: 'default',
               }}
@@ -138,7 +157,7 @@ export default function FooterSection() {
       <svg
         viewBox="0 0 900 100"
         style={{
-          width: isMobile ? 'clamp(220px, 80vw, 350px)' : 'clamp(300px, 55vw, 550px)',
+          width: 'clamp(300px, 55vw, 550px)',
           height: 'auto',
           marginTop: '-20px',
           marginBottom: '16px',
@@ -156,7 +175,7 @@ export default function FooterSection() {
           style={{
             fontFamily: '"Inter", sans-serif',
             fontWeight: 700,
-            fontSize: isMobile ? '22px' : '38px',
+            fontSize: '38px',
             letterSpacing: '0.3em',
             textTransform: 'uppercase',
           }}
