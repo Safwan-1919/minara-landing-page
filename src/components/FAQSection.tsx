@@ -257,20 +257,19 @@ export default function FAQSection() {
             >
               Questions
             </ScrollFloat>
-            {!isMobile && (
-              <div
-                style={{
-                  width: '100%',
-                  maxWidth: '260px',
-                  aspectRatio: '3/4',
-                  borderRadius: '24px',
-                  overflow: 'hidden',
-                  background: 'transparent',
-                  marginTop: '80px',
-                  marginLeft: 'auto',
-                  marginRight: 'clamp(120px, 14vw, 200px)',
-                }}
-              >
+            <div
+              style={{
+                width: '100%',
+                maxWidth: isMobile ? '140px' : '260px',
+                aspectRatio: '3/4',
+                borderRadius: isMobile ? '16px' : '24px',
+                overflow: 'hidden',
+                background: 'transparent',
+                marginTop: isMobile ? '20px' : '80px',
+                marginLeft: 'auto',
+                marginRight: isMobile ? 'auto' : 'clamp(120px, 14vw, 200px)',
+              }}
+            >
                 <video
                   ref={videoRef}
                   src="/animated-character.webm"
@@ -282,9 +281,8 @@ export default function FAQSection() {
                     height: '100%',
                     objectFit: 'contain',
                   }}
-                />
-              </div>
-            )}
+              />
+            </div>
           </div>
 
           {/* Right side — card stack transitions */}
@@ -292,7 +290,7 @@ export default function FAQSection() {
             style={{
               flex: '1',
               position: 'relative',
-              height: isMobile ? 'auto' : '100%',
+              height: isMobile ? '60vh' : '100%',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
