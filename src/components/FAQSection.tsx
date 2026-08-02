@@ -220,7 +220,7 @@ export default function FAQSection() {
               width: '100%',
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center',
+              alignItems: 'flex-start',
               paddingTop: 'clamp(16px, 4vh, 32px)',
               zIndex: 2,
             }}
@@ -246,11 +246,11 @@ export default function FAQSection() {
               borderRadius: '16px',
               overflow: 'hidden',
               marginTop: '12px',
+              alignSelf: 'center',
             }}>
               <video ref={videoRef} src="/animated-character.webm" muted playsInline preload="auto" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
             </div>
             <div style={{
-              flex: 1,
               position: 'relative',
               width: '100%',
               maxWidth: '380px',
