@@ -298,6 +298,8 @@ export default function FAQSection() {
               display: 'flex',
               gap: 'clamp(8px, 1vw, 16px)',
               alignItems: 'stretch',
+              position: 'relative',
+              zIndex: 2,
             }}
           >
             {/* Left side — fixed */}
