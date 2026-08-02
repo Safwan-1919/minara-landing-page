@@ -197,6 +197,7 @@ export default function FAQSection() {
             height: '100%',
             pointerEvents: 'none',
             zIndex: 1,
+            display: isMobile ? 'none' : 'block',
           }}
           viewBox="0 0 1440 1000"
           fill="none"
@@ -254,6 +255,7 @@ export default function FAQSection() {
               position: 'relative',
               width: '100%',
               maxWidth: '380px',
+              height: '260px',
               marginTop: '16px',
             }}>
               {faqs.map((faq, i) => (
