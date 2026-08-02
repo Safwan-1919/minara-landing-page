@@ -116,10 +116,7 @@ input[type="number"] {
 }
 
 @media (max-width: 600px) {
-  .brand-letters-wrap {
-    transform: scale(0.48);
-    transform-origin: center center;
-    margin-top: -14vh;
-    white-space: nowrap;
+  .brand-letter {
+    transform: translateY(0) !important;
   }
 }

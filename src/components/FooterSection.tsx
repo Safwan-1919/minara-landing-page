@@ -26,9 +26,17 @@ export default function FooterSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const brandRef = useRef<HTMLDivElement>(null)
   const [isMobile, setIsMobile] = useState(false)
+  const [mobileScale, setMobileScale] = useState(1)
 
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth <= 600)
+    const check = () => {
+      const w = window.innerWidth
+      setIsMobile(w <= 600)
+      if (w <= 600) {
+        const scale = Math.max(0.42, Math.min(0.65, 0.65 * (w / 390)))
+        setMobileScale(scale)
+      }
+    }
     check()
     window.addEventListener('resize', check)
     return () => window.removeEventListener('resize', check)
@@ -108,6 +116,7 @@ export default function FooterSection() {
           display: 'flex',
           alignItems: 'baseline',
           justifyContent: 'center',
+          ...(isMobile ? { transform: `scale(${mobileScale})`, transformOrigin: 'center center', marginTop: '-14vh', whiteSpace: 'nowrap' } : {}),
         }}>
           {letters.map((l, i) => (
             <span
