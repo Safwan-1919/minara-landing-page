@@ -242,7 +242,7 @@ export default function FAQSection() {
               Questions
             </ScrollFloat>
             <div style={{
-              width: '120px',
+              width: '160px',
               aspectRatio: '3/4',
               borderRadius: '16px',
               overflow: 'hidden',
@@ -255,7 +255,7 @@ export default function FAQSection() {
               position: 'relative',
               width: '100%',
               maxWidth: '380px',
-              height: '260px',
+              aspectRatio: '1 / 0.9',
               marginTop: '16px',
             }}>
               {faqs.map((faq, i) => (
